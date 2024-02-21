@@ -1,4 +1,4 @@
-# Netbox dynamic ports count
+# Aggregatron : dynamic ports count for Netbox
 
 This plugin aims to give an overview of ports availability at both rack and device level.  
 Basically it's just a clone of standards racks and devices view, with an added column for ports count (free/total)  
