@@ -1,0 +1,42 @@
+{% load form_helpers %}
+{% load helpers %}
+
+{% for field in filter_form.hidden_fields %}
+  {{ field }}
+{% endfor %}
+{# List filters by group #}
+{% for heading, fields in filter_form.fieldsets %}
+  <div class="col col-12">
+    {% if heading %}
+      <h6>{{ heading }}</h6>
+    {% endif %}
+    {% for name in fields %}
+      {% with field=filter_form|get_item:name %}
+        {% render_field field %}
+      {% endwith %}
+    {% endfor %}
+  </div>
+  {% if not forloop.last %}
+    <hr class="card-divider mt-0" />
+  {% endif %}
+{% empty %}
+  {# List all non-customfield filters as declared in the form class #}
+  {% for field in filter_form.visible_fields %}
+    {% if not filter_form.custom_fields or field.name not in filter_form.custom_fields %}
+      <div class="col col-12">
+        {% render_field field %}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+{% if filter_form.custom_fields %}
+  {# List all custom field filters #}
+  <hr class="card-divider mt-0" />
+  {% for name in filter_form.custom_fields %}
+    <div class="col col-12">
+      {% with field=filter_form|get_item:name %}
+        {% render_field field %}
+      {% endwith %}
+    </div>
+  {% endfor %}
+{% endif %}
