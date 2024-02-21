@@ -3,12 +3,12 @@
 This plugin aims to give an overview of ports availability at both rack and device level.  
 Basically it's just a clone of standards racks and devices view, with an added column for ports count (free/total)  
 
-![Screenshot 2024-02-20 alle 17 51 18](https://github.com/coloHsq/aggregatron/assets/46020242/6e86c786-f4e1-4fa8-a8a5-496894d2750d)
+![Screenshot 2024-02-20 alle 17 51 18](https://github.com/coloHsq/aggregatron/assets/46020242/e1bb6972-b496-4316-98ee-ab2b84f710d0)
 *This can be explained as: given a location, show the port count for all racks that contains a switch with at least one free 40GE port*
 
 All the "magic" is done with dynamic count subqueries, driven by a custom form that extends the base ones (devices and racks) by adding the various ports types filtering options.
 
-![Screenshot 2024-02-20 alle 17 52 03](https://github.com/coloHsq/aggregatron/assets/46020242/70c95afa-f63c-47bc-8eba-18f41b1fe266)
+![Screenshot 2024-02-20 alle 17 52 03](https://github.com/coloHsq/aggregatron/assets/46020242/614b054b-95fd-4b2c-9aa7-eba21c4d635b)
 *For instance, the "ports aggregation" field is always threre, the other fields are dynamically added based on its selection*
 
 By now, "free ports" are counted with the same condition of stock Netbox's filter "Occupied == No", meaning no cable connected and not marked as connected.
