@@ -7,7 +7,7 @@ from extras.models import ExportTemplate
 from netbox.views.generic import ObjectListView
 from netbox.views.generic.mixins import TableMixin
 from netbox.views.generic.utils import get_prerequisite_model
-from utilities.htmx import is_htmx, is_embedded
+from utilities.htmx import htmx_partial
 from .filtersets import RackStatsFilterSet, DeviceStatsFilterSet
 from .forms import get_rack_stats_filter_form, get_device_stats_filter_form
 from .tables import *
@@ -65,9 +65,9 @@ class DynAggregationObjectListView(ObjectListView, TableMixin):
         table = self.get_table(self.queryset, request, has_bulk_actions)
 
         # If this is an HTMX request, return only the rendered table HTML
-        if is_htmx(request):
+        if htmx_partial(request):
             if request.headers.get('hx-target', None) == 'object_list':
-                if is_embedded(request):
+                if request.GET.get('embedded', False):
                     table.embedded = True
                     # Hide selection checkboxes
                     if 'pk' in table.base_columns:

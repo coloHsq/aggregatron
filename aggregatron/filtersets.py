@@ -2,12 +2,11 @@ import django_filters
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import OuterRef, Count, Subquery, Q
 from django.db.models.functions import Coalesce
+from django.utils.module_loading import import_string
 
 from dcim.filtersets import RackFilterSet, DeviceFilterSet
 
 __all__ = ('RackStatsFilterSet', 'DeviceStatsFilterSet')
-
-from utilities.utils import dynamic_import
 
 
 class DynFilterSet(django_filters.FilterSet):
@@ -37,7 +36,7 @@ class DynFilterSet(django_filters.FilterSet):
         if model is None:
             return queryset
         aggregation_filters = {key.lstrip('n_'): [value] for key, value in self.data.items() if key.startswith('n_')}
-        dyn_filterset = dynamic_import(f'dcim.filtersets.{model._meta.object_name}FilterSet')
+        dyn_filterset = import_string(f'dcim.filtersets.{model._meta.object_name}FilterSet')
         base_qs = dyn_filterset(data=aggregation_filters, queryset=model.objects.all()).qs
         ports = base_qs.filter(Q((self.subquery_key, OuterRef('pk'))))
         total = ports.order_by().values(self.subquery_key).annotate(count=Count('pk')).values('count')
