@@ -21,7 +21,7 @@
   </ul>
 {% endblock tabs %}
 
-{% block content-wrapper %}
+{% block content %}
   <div class="tab-content">
 
     {# Object list #}
@@ -37,31 +37,6 @@
 
       <form method="post" class="form form-horizontal">
         {% csrf_token %}
-        {# "Select all" form #}
-        {% if table.paginator.num_pages > 1 %}
-          <div id="select-all-box" class="d-none card noprint">
-            <div class="form col-md-12">
-              <div class="card-body">
-                <div class="float-end">
-                  {% if 'bulk_edit' in actions %}
-                    {% bulk_edit_button model query_params=request.GET %}
-                  {% endif %}
-                  {% if 'bulk_delete' in actions %}
-                    {% bulk_delete_button model query_params=request.GET %}
-                  {% endif %}
-                </div>
-                <div class="form-check">
-                  <input type="checkbox" id="select-all" name="_all" class="form-check-input" />
-                  <label for="select-all" class="form-check-label">
-                    {% blocktrans trimmed with count=table.rows|length object_type_plural=table.data.verbose_name_plural %}
-                      Select <strong>all {{ count }} {{ object_type_plural }}</strong> matching query
-                    {% endblocktrans %}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
 
         <div class="form form-horizontal">
           {% csrf_token %}
@@ -79,19 +54,6 @@
             </div>
           </div>
 
-          {# Form buttons #}
-          <div class="noprint bulk-buttons">
-            <div class="bulk-button-group">
-              {% block bulk_buttons %}
-                {% if 'bulk_edit' in actions %}
-                  {% bulk_edit_button model query_params=request.GET %}
-                {% endif %}
-                {% if 'bulk_delete' in actions %}
-                  {% bulk_delete_button model query_params=request.GET %}
-                {% endif %}
-              {% endblock %}
-            </div>
-          </div>
         </div>
       </form>
 
@@ -105,4 +67,4 @@
     {% endif %}
   </div>
 
-{% endblock content-wrapper %}
+{% endblock content %}

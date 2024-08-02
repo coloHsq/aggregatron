@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='aggregatron',
-    version='0.1',
+    version='0.2',
     description='Conditional count aggregation for device components',
     url='',
     author='Davide Colombo',

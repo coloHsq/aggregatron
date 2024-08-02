@@ -1,15 +1,20 @@
 {% load i18n %}
 
+{% comment %}
+  Replicate the stock Netbox filter_list.html, the only difference is that the div containing the filtersets
+  is an htmx target
+{% endcomment %}
+
 <form action="." method="get">
   <div class="card">
     <div class="card-body overflow-visible d-flex flex-wrap justify-content-between py-3" id="filter-fields">
       {% include './htmx/filter_form.html' %}
     </div>
     <div class="card-footer text-end noprint border-0">
-      <button type="button" class="btn btn-sm btn-outline-danger m-1" data-reset-select>
+      <button type="button" class="btn btn-outline-danger m-1" data-reset-select>
         <i class="mdi mdi-backspace"></i> {% trans "Reset" %}
       </button>
-      <button type="submit" class="btn btn-sm btn-primary m-1">
+      <button type="submit" class="btn btn-primary m-1">
         <i class="mdi mdi-magnify"></i> {% trans "Search" %}
       </button>
     </div>

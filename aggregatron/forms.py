@@ -3,6 +3,8 @@ from dcim.forms import DeviceFilterForm, RackFilterForm
 
 __all__ = ('get_rack_stats_filter_form', 'get_device_stats_filter_form')
 
+from utilities.forms.rendering import FieldSet
+
 from utilities.forms.widgets import HTMXSelect
 
 from django import forms
@@ -18,9 +20,9 @@ from utilities.forms.widgets import NumberWithOptions
 
 # region nested forms
 class _NestedDeviceFilterForm(forms.Form):
-    device_fieldsets = (
-        (_('Device'), ('n_device_type_id', 'n_device_role_id')),
-    )
+
+    device_fieldsets = (FieldSet('n_device_type_id', 'n_device_role_id', name=_('Device')),)
+
     n_device_type_id = DynamicModelChoiceField(
         queryset=DeviceType.objects.all(),
         required=False,
@@ -34,10 +36,12 @@ class _NestedDeviceFilterForm(forms.Form):
 
 
 class _InterfaceFilterForm(forms.Form):
+
     nested_fieldsets = (
-        (_('Attributes'), ('n_type', 'n_speed', 'n_duplex', 'n_enabled', 'n_mgmt_only')),
-        (_('PoE'), ('n_poe_mode', 'n_poe_type'))
+        FieldSet('n_type', 'n_speed', 'n_duplex', 'n_enabled', 'n_mgmt_only', name=_('Attributes')),
+        FieldSet('n_poe_mode', 'n_poe_type', name=_('PoE'))
     )
+
     n_type = forms.MultipleChoiceField(
         label=_('Type'),
         choices=InterfaceTypeChoices,
@@ -83,7 +87,7 @@ class _InterfaceFilterForm(forms.Form):
 
 class _FrontPortFilterForm(forms.Form):
     nested_fieldsets = (
-        (_('Attributes'), ('n_type',)),
+        FieldSet('n_type',name=_('Attributes')),
     )
     n_type = forms.MultipleChoiceField(
         label=_('Type'),
@@ -94,7 +98,7 @@ class _FrontPortFilterForm(forms.Form):
 
 class _RearPortFilterForm(forms.Form):
     nested_fieldsets = (
-        (_('Attributes'), ('n_type',)),
+        FieldSet('n_type', name=_('Attributes')),
     )
     n_type = forms.MultipleChoiceField(
         label=_('Type'),
@@ -118,7 +122,7 @@ class _RackStatsFilterForm(RackFilterForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fieldsets = self.fieldsets + ((_('Ports aggregation'), ('aggregate_on',)),)
+        self.fieldsets = self.fieldsets + (FieldSet('aggregate_on', name=_('Ports aggregation')),)
 
 
 def custom_rack_init(cls, *args, **kwargs):
@@ -167,7 +171,7 @@ class _DeviceStatsFilterForm(DeviceFilterForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fieldsets = self.fieldsets + ((_('Ports aggregation'), ('aggregate_on',)),)
+        self.fieldsets = self.fieldsets + (FieldSet('aggregate_on', name=_('Ports aggregation')),)
 
 
 def custom_device_init(cls, *args, **kwargs):

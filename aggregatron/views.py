@@ -14,6 +14,7 @@ from .tables import *
 
 
 class DynAggregationObjectListView(ObjectListView, TableMixin):
+    actions = {'export': set()}
     additional_permissions = ('dcim.view_interface', 'dcim.view_fronport', 'dcim.view_rearport')
 
     def get_filterset_form(self, request):
@@ -97,7 +98,7 @@ class DeviceOverviewListView(DynAggregationObjectListView):
     filterset = DeviceStatsFilterSet
     table = DeviceStatsTable
     template_name = 'aggregatron/device_ports_overview_list.html'
-    actions = ('export',)
+
     # Empty annotation needed to avoid field errors in table display,
     # probably there's a better way to accomplish this
     queryset = Device.objects.annotate(free_ports=Value(None, IntegerField(null=True)))
@@ -111,7 +112,6 @@ class RackOverviewListView(DynAggregationObjectListView):
     filterset = RackStatsFilterSet
     table = RackStatsTable
     template_name = 'aggregatron/rack_ports_overview_list.html'
-    actions = ('export',)
     # Empty annotation needed to avoid field errors in table display,
     # probably there's a better way to accomplish this
     queryset = Rack.objects.annotate(free_ports=Value(None, IntegerField(null=True)))

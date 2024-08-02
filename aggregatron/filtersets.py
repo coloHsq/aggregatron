@@ -1,9 +1,9 @@
 import django_filters
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import OuterRef, Count, Subquery, Q
 from django.db.models.functions import Coalesce
 from django.utils.module_loading import import_string
 
+from core.models import ObjectType
 from dcim.filtersets import RackFilterSet, DeviceFilterSet
 
 __all__ = ('RackStatsFilterSet', 'DeviceStatsFilterSet')
@@ -22,8 +22,8 @@ class DynFilterSet(django_filters.FilterSet):
             dynamically resolve models base on filter form selection
         """
         try:
-            ct = ContentType.objects.get(app_label='dcim', model=model_name).model_class()
-        except ContentType.DoesNotExist:
+            ct = ObjectType.objects.get(app_label='dcim', model=model_name).model_class()
+        except ObjectType.DoesNotExist:
             ct = None
         return ct
 
