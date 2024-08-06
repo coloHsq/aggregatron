@@ -1,8 +1,8 @@
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Value, IntegerField
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
+from core.models import ObjectType
 from extras.models import ExportTemplate
 from netbox.views.generic import ObjectListView
 from netbox.views.generic.mixins import TableMixin
@@ -28,7 +28,7 @@ class DynAggregationObjectListView(ObjectListView, TableMixin):
             request: The current request
         """
         model = self.queryset.model
-        content_type = ContentType.objects.get_for_model(model)
+        content_type = ObjectType.objects.get_for_model(model)
 
         if self.filterset:
             self.queryset = self.filterset(request.GET, self.queryset, request=request).qs
