@@ -1,0 +1,12 @@
+# See PEP 518 for the spec of this file
+# https://www.python.org/dev/peps/pep-0518/
+
+
+[project]
+name =  "aggregatron"
+version = "0.2"
+authors = [
+    {name = "Davide Colombo", email = "colombo.davidehsq@gmail.com"},
+]
+description = "Conditional count aggregation for device component"
+license = { file = "LICENSE" }
